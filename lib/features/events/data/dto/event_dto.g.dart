@@ -11,13 +11,8 @@ EventDto _$EventDtoFromJson(Map<String, dynamic> json) => EventDto(
       name: json['name'] as String,
       eventType: EventDto._eventTypeFromJson(json['classifications']),
       eventDate: EventDto._eventDateFromJson(json['dates']),
-      eventVenueId: EventDto._eventVenueFromJson(json['_embedded']),
+      eventVenueId: EventDto._readVenueId(json, 'eventVenueId') as String?,
+      eventVenueName:
+          EventDto._readVenueName(json, 'eventVenueName') as String?,
+      image: EventDto._imageFromJson(json['images']),
     );
-
-Map<String, dynamic> _$EventDtoToJson(EventDto instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'classifications': instance.eventType,
-      'dates': instance.eventDate,
-      '_embedded': instance.eventVenueId,
-    };

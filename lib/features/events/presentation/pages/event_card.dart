@@ -22,18 +22,7 @@ class EventCard extends StatelessWidget {
           child: Row(
             children: [
               /// SOL TARAF – ICON / IMAGE (şimdilik placeholder)
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: Colors.deepPurple.shade100,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(
-                  Icons.event,
-                  color: Colors.deepPurple,
-                ),
-              ),
+              _EventImage(imageUrl: event.imageUrl),
 
               const SizedBox(width: 16),
 
@@ -73,6 +62,25 @@ class EventCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+}
+
+class _EventImage extends StatelessWidget {
+  final String? imageUrl;
+
+  const _EventImage({this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 96,
+      height: 96,
+      color: Colors.grey.shade200,
+      child: imageUrl != null
+          ? Image.network(imageUrl!, fit: BoxFit.fill)
+          : const Icon(Icons.location_on, size: 40),
     );
   }
 }

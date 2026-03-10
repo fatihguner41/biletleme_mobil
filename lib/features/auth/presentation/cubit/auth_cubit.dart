@@ -4,6 +4,8 @@ import 'package:ticketing/features/auth/domain/usecases/check_auth_usecase.dart'
 import 'package:ticketing/features/auth/domain/usecases/login_usecase.dart';
 import 'package:ticketing/features/auth/domain/usecases/logout_usecase.dart';
 
+import '../../domain/usecases/register_usecase.dart';
+
 abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
@@ -21,11 +23,13 @@ class AuthError extends AuthState {
 }
 class AuthCubit extends Cubit<AuthState> {
   final CheckAuthUseCase checkAuthUseCase;
+  final RegisterUseCase registerUseCase;
   final LoginUseCase loginUseCase;
   final LogoutUseCase logoutUseCase;
 
   AuthCubit({
     required this.checkAuthUseCase,
+    required this.registerUseCase,
     required this.loginUseCase,
     required this.logoutUseCase,
   }) : super(AuthInitial());
@@ -47,8 +51,24 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> signUp(String email, String password, String name, String surname) async {
+    try {
+      emit(AuthLoading());
+      await registerUseCase(RegisterParams(email, password,name, surname));
+      //otomatik login:
+      await loginUseCase(LoginParams(email, password));
+      emit(AuthAuthenticated());
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
   Future<void> signOut() async {
-    await logoutUseCase(NoParams());
-    emit(AuthUnauthenticated());
+    try{
+
+      await logoutUseCase(NoParams());
+      emit(AuthUnauthenticated());
+    }catch(e){
+      emit(AuthError(e.toString()));
+    }
   }
 }

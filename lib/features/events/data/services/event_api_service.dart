@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:ticketing/core/network/api_constants.dart';
 import '../responses/event_response.dart';
 
 class EventApiService {
@@ -7,18 +8,37 @@ class EventApiService {
   EventApiService(this._dio);
 
   Future<EventResponse> getEvents({
-    required String apiKey,
-    required String countryCode,
+    required String keyword,
     required String classification,
-    required int size,
+    required int page,
   }) async {
     final response = await _dio.get(
-      '/discovery/v2/events.json',
+      ApiConstants.eventsRoute,
       queryParameters: {
-        'apikey': apiKey,
-        'countryCode': countryCode,
+        'apikey': ApiConstants.apiKey,
+        'countryCode': ApiConstants.countryCode,
+        'size': ApiConstants.size,
         'classificationName': classification,
-        'size': size,
+        'keyword': keyword,
+        'page': page,
+      },
+    );
+
+    return EventResponse.fromJson(response.data);
+  }
+
+  Future<EventResponse> getEventsByVenueId({
+    required String venueId,
+    required int page,
+  }) async {
+    final response = await _dio.get(
+      ApiConstants.eventsRoute,
+      queryParameters: {
+        'apikey': ApiConstants.apiKey,
+        'countryCode': ApiConstants.countryCode,
+        'size': ApiConstants.size,
+        'venueId': venueId,
+        'page': page,
       },
     );
 

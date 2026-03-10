@@ -7,6 +7,7 @@ class Event {
   String? venue;
   String? eventType;
   String? eventVenueId;
+  String? eventVenueName;
 
   Event({
     required this.id,
@@ -15,7 +16,8 @@ class Event {
     this.date,
     this.venue,
     this.eventType,
-    this.eventVenueId
+    this.eventVenueId,
+    this.eventVenueName
   });
 
 }

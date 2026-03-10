@@ -14,7 +14,7 @@ class EventsRoot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<EventBloc>()..add(FetchEvents()),
+      create: (_) => sl<EventBloc>()..add(EventQueryChanged("")),
       child: child,
     );
   }

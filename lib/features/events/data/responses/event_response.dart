@@ -1,22 +1,30 @@
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../../venues/data/responses/venue_response.dart';
 import '../dto/event_dto.dart';
 
 part 'event_response.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class EventResponse {
   @JsonKey(name: '_embedded')
-  final EmbeddedEvents embedded;
+  final EmbeddedEvents? embedded;   // nullable yap
 
-  EventResponse({required this.embedded});
+  final PageInfo page;
+
+  EventResponse({
+    required this.embedded,
+    required this.page,
+  });
 
   factory EventResponse.fromJson(Map<String, dynamic> json) =>
       _$EventResponseFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class EmbeddedEvents {
-  final List<EventDto> events;
+  @JsonKey(defaultValue: [])
+  final List<EventDto> events;   // defaultValue ekle
 
   EmbeddedEvents({required this.events});
 
